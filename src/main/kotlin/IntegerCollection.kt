@@ -2,7 +2,7 @@ package org.example
 
 import kotlin.math.pow
 
-sealed interface IntegerCollection {
+    sealed interface IntegerCollection {
     fun append(value: Int): IntegerCollection = when(this) {
         is NonEmptyNode -> NonEmptyNode(head, tail.append(value))
         is EmptyNode -> NonEmptyNode(value, EmptyNode)

@@ -16,6 +16,13 @@ sealed interface StringCollection {
         is NonEmptyString -> if (head.length == 3) NonEmptyString(head, tail.getThreeCharacterLongValues()) else tail.getThreeCharacterLongValues()
     }
 
+    fun getLength(): IntegerCollection = when (this) {
+        EmptyString -> EmptyNode
+        is NonEmptyString -> if (head.isNotEmpty()) NonEmptyNode(head.length, tail.getLength()) else tail.getLength()
+    }
+
+    
+
 
 }
 

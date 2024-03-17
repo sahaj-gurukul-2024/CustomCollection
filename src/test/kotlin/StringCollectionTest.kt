@@ -35,8 +35,8 @@ class StringCollectionTest{
     }
 
     @Test
-    get lengthOfString() {
+    fun getLengthOfStringList() {
         val stringCollection = NonEmptyString("abc", NonEmptyString("abcd", EmptyString))
-        assertEquals(NonEmptyNode(2, EmptyNode), stringCollection.getLength())
+        assertEquals(NonEmptyNode(3, NonEmptyNode(4, EmptyNode)), stringCollection.getLength())
     }
 }
