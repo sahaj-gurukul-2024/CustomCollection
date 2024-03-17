@@ -31,9 +31,10 @@ sealed interface StringCollection {
         is NonEmptyString -> head.plus(tail.getConcatenated())
     }
 
-    
-
-
+    fun getFirstCharacterConcatenated(): String = when(this) {
+        EmptyString -> ""
+        is NonEmptyString -> head.take(1).plus(tail.getFirstCharacterConcatenated())
+    }
 }
 
 data class NonEmptyString(val head: String, val tail: StringCollection) : StringCollection

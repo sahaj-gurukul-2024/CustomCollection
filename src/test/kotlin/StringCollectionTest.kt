@@ -53,4 +53,12 @@ class StringCollectionTest{
             NonEmptyString("a", NonEmptyString("b", NonEmptyString("c", EmptyString))).getConcatenated()
         )
     }
+
+    @Test
+    fun getFirstCharacterConcatenated() {
+        assertEquals(
+            "aaa",
+            NonEmptyString("abc", NonEmptyString("abc", NonEmptyString("abc", EmptyString))).getFirstCharacterConcatenated()
+        )
+    }
 }
