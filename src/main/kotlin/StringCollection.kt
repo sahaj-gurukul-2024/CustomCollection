@@ -13,7 +13,7 @@ sealed interface StringCollection {
 
     fun getThreeCharacterLongValues(): StringCollection = when (this) {
         EmptyString -> EmptyString
-        is NonEmptyString -> if (head.length == 3) NonEmptyString(head, tail.getThreeCharacterLongValues()) else tail.getThreeCharacterLongValues()
+        is NonEmptyString -> filter { it.length == 3 }
     }
 
     fun getLength(): IntegerCollection = when (this) {
@@ -39,6 +39,11 @@ sealed interface StringCollection {
     fun operationAggregate(operation: (String) -> String): StringCollection = when(this) {
         EmptyString -> EmptyString
         is NonEmptyString -> NonEmptyString(operation(head), tail.operationAggregate(operation))
+    }
+
+    fun filter(condition: (String) -> Boolean): StringCollection = when(this) {
+        EmptyString -> EmptyString
+        is NonEmptyString -> if (condition(head)) NonEmptyString(head, tail.filter(condition)) else tail.filter(condition)
     }
 }
 
