@@ -26,6 +26,11 @@ sealed interface StringCollection {
         is NonEmptyString -> head.length + tail.getSumOfAllLengths()
     }
 
+    fun getConcatenated(): String = when(this) {
+        EmptyString -> ""
+        is NonEmptyString -> head.plus(tail.getConcatenated())
+    }
+
     
 
 

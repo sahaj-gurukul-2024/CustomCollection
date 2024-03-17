@@ -45,4 +45,12 @@ class StringCollectionTest{
         val stringCollection = NonEmptyString("abc", NonEmptyString("abcd", EmptyString))
         assertEquals(7, stringCollection.getSumOfAllLengths())
     }
+
+    @Test
+    fun getConcatenated() {
+        assertEquals(
+            "abc",
+            NonEmptyString("a", NonEmptyString("b", NonEmptyString("c", EmptyString))).getConcatenated()
+        )
+    }
 }
