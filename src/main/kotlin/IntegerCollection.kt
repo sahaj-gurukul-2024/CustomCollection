@@ -32,7 +32,6 @@ import kotlin.math.pow
         is EmptyNode -> EmptyNode
     }
 
-
     fun getSum(): Int? = when(this) {
         is NonEmptyNode -> head + (tail.getSum() ?: 0)
         is EmptyNode -> 0

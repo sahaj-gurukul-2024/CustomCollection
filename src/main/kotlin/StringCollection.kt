@@ -3,12 +3,12 @@ package org.example
 sealed interface StringCollection {
     fun getAllUppercase(): StringCollection = when (this) {
         EmptyString -> EmptyString
-        is NonEmptyString -> NonEmptyString(head.uppercase(), tail.getAllUppercase())
+        is NonEmptyString -> operationAggregate { it.uppercase() }
     }
 
     fun getAllLowercase(): StringCollection = when (this) {
         EmptyString -> EmptyString
-        is NonEmptyString -> NonEmptyString(head.lowercase(), tail.getAllLowercase())
+        is NonEmptyString -> operationAggregate { it.lowercase() }
     }
 
     fun getThreeCharacterLongValues(): StringCollection = when (this) {
@@ -34,6 +34,11 @@ sealed interface StringCollection {
     fun getFirstCharacterConcatenated(): String = when(this) {
         EmptyString -> ""
         is NonEmptyString -> head.take(1).plus(tail.getFirstCharacterConcatenated())
+    }
+
+    fun operationAggregate(operation: (String) -> String): StringCollection = when(this) {
+        EmptyString -> EmptyString
+        is NonEmptyString -> NonEmptyString(operation(head), tail.operationAggregate(operation))
     }
 }
 
