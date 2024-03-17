@@ -18,7 +18,12 @@ sealed interface StringCollection {
 
     fun getLength(): IntegerCollection = when (this) {
         EmptyString -> EmptyNode
-        is NonEmptyString -> if (head.isNotEmpty()) NonEmptyNode(head.length, tail.getLength()) else tail.getLength()
+        is NonEmptyString -> NonEmptyNode(head.length, tail.getLength())
+    }
+
+    fun getSumOfAllLengths(): Int = when (this) {
+        EmptyString -> 0
+        is NonEmptyString -> head.length + tail.getSumOfAllLengths()
     }
 
     

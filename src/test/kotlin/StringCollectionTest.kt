@@ -39,4 +39,10 @@ class StringCollectionTest{
         val stringCollection = NonEmptyString("abc", NonEmptyString("abcd", EmptyString))
         assertEquals(NonEmptyNode(3, NonEmptyNode(4, EmptyNode)), stringCollection.getLength())
     }
+
+    @Test
+    fun getSumOfAll() {
+        val stringCollection = NonEmptyString("abc", NonEmptyString("abcd", EmptyString))
+        assertEquals(7, stringCollection.getSumOfAllLengths())
+    }
 }
