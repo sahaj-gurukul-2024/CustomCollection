@@ -6,12 +6,16 @@ sealed interface StringCollection {
         is NonEmptyString -> NonEmptyString(head.uppercase(), tail.getAllUppercase())
     }
 
-    fun getAllLowercase(): StringCollection = when(this) {
+    fun getAllLowercase(): StringCollection = when (this) {
         EmptyString -> EmptyString
         is NonEmptyString -> NonEmptyString(head.lowercase(), tail.getAllLowercase())
     }
 
-    
+    fun getThreeCharacterLongValues(): StringCollection = when (this) {
+        EmptyString -> EmptyString
+        is NonEmptyString -> if (head.length == 3) NonEmptyString(head, tail.getThreeCharacterLongValues()) else tail.getThreeCharacterLongValues()
+    }
+
 
 }
 
