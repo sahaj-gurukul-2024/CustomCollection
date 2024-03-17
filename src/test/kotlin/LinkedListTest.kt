@@ -100,8 +100,4 @@ class LinkedListTest {
         val linkedList = NonEmptyNode(1, NonEmptyNode(2, NonEmptyNode(3, EmptyNode)))
         assertEquals(1, linkedList.getMin())
     }
-
-
-
-
 }
