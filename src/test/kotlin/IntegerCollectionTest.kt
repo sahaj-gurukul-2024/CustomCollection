@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
-class LinkedListTest {
+class IntegerCollectionTest {
 
     @Test
     fun initList() {

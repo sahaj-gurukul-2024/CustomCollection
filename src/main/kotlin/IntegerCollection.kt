@@ -2,13 +2,13 @@ package org.example
 
 import kotlin.math.pow
 
-sealed interface LinkedList {
-    fun append(value: Int): LinkedList = when(this) {
+sealed interface IntegerCollection {
+    fun append(value: Int): IntegerCollection = when(this) {
         is NonEmptyNode -> NonEmptyNode(head, tail.append(value))
         is EmptyNode -> NonEmptyNode(value, EmptyNode)
     }
 
-    fun prepend(value: Int): LinkedList = when(this) {
+    fun prepend(value: Int): IntegerCollection = when(this) {
         is NonEmptyNode -> NonEmptyNode(value, this)
         EmptyNode -> EmptyNode
     }
@@ -22,12 +22,12 @@ sealed interface LinkedList {
 
     fun incrementBy(value: Int) = operationAggregate(value) { it.plus(value) }
 
-    fun getAllOdds(): LinkedList = when(this) {
+    fun getAllOdds(): IntegerCollection = when(this) {
         is NonEmptyNode -> filter { it.mod(2) != 0 }
         EmptyNode -> EmptyNode
     }
 
-    fun getAllEvens(): LinkedList = when(this) {
+    fun getAllEvens(): IntegerCollection = when(this) {
         is NonEmptyNode -> filter { it.mod(2) == 0 }
         is EmptyNode -> EmptyNode
     }
@@ -48,20 +48,19 @@ sealed interface LinkedList {
         EmptyNode -> null
     }
 
-    fun filter(condition: (Int) -> Boolean): LinkedList = when(this) {
+    fun filter(condition: (Int) -> Boolean): IntegerCollection = when(this) {
         is NonEmptyNode -> if (condition(head)) NonEmptyNode(head, tail.filter(condition)) else tail.filter(condition)
         is EmptyNode -> EmptyNode
     }
 
-    fun operationAggregate(value: Int, operation: (Int) -> Int): LinkedList = when(this) {
+    fun operationAggregate(value: Int, operation: (Int) -> Int): IntegerCollection = when(this) {
         is NonEmptyNode -> NonEmptyNode(operation(head), tail.operationAggregate(value, operation))
         is EmptyNode -> EmptyNode
     }
 }
 
-data object EmptyNode : LinkedList
-
-data class NonEmptyNode(val head: Int, val tail: LinkedList) : LinkedList
+data class NonEmptyNode(val head: Int, val tail: IntegerCollection) : IntegerCollection
+data object EmptyNode : IntegerCollection
 
 
 
