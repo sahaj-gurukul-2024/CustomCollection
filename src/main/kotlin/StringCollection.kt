@@ -27,8 +27,7 @@ sealed interface StringCollection {
     }
 
     fun getConcatenated(): String = concatenate { it }
-
-
+    
     fun getFirstCharacterConcatenated(): String = concatenate { it.take(1) }
 
     fun operationAggregate(operation: (String) -> String): StringCollection = when(this) {
@@ -41,11 +40,9 @@ sealed interface StringCollection {
         is NonEmptyString -> if (condition(head)) NonEmptyString(head, tail.filter(condition)) else tail.filter(condition)
     }
 
-    fun concatenate(getHead: (String) -> String): String {
-        return when (this) {
-            EmptyString -> ""
-            is NonEmptyString -> getHead(head).plus(tail.getConcatenated())
-        }
+    fun concatenate(getHead: (String) -> String): String = when (this) {
+        EmptyString -> ""
+        is NonEmptyString -> getHead(head).plus(tail.getConcatenated())
     }
 }
 
