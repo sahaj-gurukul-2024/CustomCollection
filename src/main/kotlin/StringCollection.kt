@@ -1,50 +1,42 @@
 package org.example
 
 sealed interface StringCollection {
-    fun getAllUppercase(): StringCollection = when (this) {
-        EmptyString -> EmptyString
-        is NonEmptyString -> transform { it.uppercase() }
-    }
+    fun getAllUppercase(): StringCollection
+    fun getAllLowercase(): StringCollection
+    fun getThreeCharacterLongValues(): StringCollection
+    fun getLength(): IntegerCollection
+    fun getSumOfAllLengths(): Int
+    fun getConcatenated(): String
+    fun getFirstCharacterConcatenated(): String
+    fun operationAggregate(operation: (String) -> String): StringCollection
+    fun filter(condition: (String) -> Boolean): StringCollection
+    fun concatenate(getHead: (String) -> String): String
 
-    fun getAllLowercase(): StringCollection = when (this) {
-        EmptyString -> EmptyString
-        is NonEmptyString -> transform { it.lowercase() }
-    }
-
-    fun getThreeCharacterLongValues(): StringCollection = when (this) {
-        EmptyString -> EmptyString
-        is NonEmptyString -> filter { it.length == 3 }
-    }
-
-    fun getLength(): IntegerCollection = when (this) {
-        EmptyString -> EmptyNode
-        is NonEmptyString -> NonEmptyNode(head.length, tail.getLength())
-    }
-    fun getSumOfAllLengths(): Int = when (this) {
-        EmptyString -> 0
-        is NonEmptyString -> head.length + tail.getSumOfAllLengths()
-    }
-
-    fun getConcatenated(): String = concatenate { it }
-
-    fun getFirstCharacterConcatenated(): String = concatenate { it.take(1) }
-
-    fun transform(operation: (String) -> String): StringCollection = when(this) {
-        EmptyString -> EmptyString
-        is NonEmptyString -> NonEmptyString(operation(head), tail.transform(operation))
-    }
-
-    fun filter(condition: (String) -> Boolean): StringCollection = when(this) {
-        EmptyString -> EmptyString
-        is NonEmptyString -> if (condition(head)) NonEmptyString(head, tail.filter(condition)) else tail.filter(condition)
-    }
-
-    fun concatenate(getHead: (String) -> String): String = when (this) {
-        EmptyString -> ""
-        is NonEmptyString -> getHead(head).plus(tail.concatenate(getHead))
-    }
 }
 
-data class NonEmptyString(val head: String, val tail: StringCollection) : StringCollection
+data class NonEmptyString(val head: String, val tail: StringCollection) : StringCollection {
+    override fun getAllUppercase(): StringCollection = operationAggregate { it.uppercase() }
+    override fun getAllLowercase(): StringCollection = operationAggregate { it.lowercase() }
+    override fun getThreeCharacterLongValues(): StringCollection = filter { it.length == 3 }
+    override fun getLength(): IntegerCollection = NonEmptyNode(head.length, tail.getLength())
+    override fun getSumOfAllLengths(): Int = head.length + tail.getSumOfAllLengths()
+    override fun getConcatenated(): String = concatenate { it }
+    override fun getFirstCharacterConcatenated(): String = concatenate { it.take(1) }
+    override fun operationAggregate(operation: (String) -> String): StringCollection = NonEmptyString(operation(head), tail.operationAggregate(operation))
+    override fun filter(condition: (String) -> Boolean): StringCollection = if (condition(head)) NonEmptyString(head, tail.filter(condition)) else tail.filter(condition)
+    override fun concatenate(getHead: (String) -> String): String = getHead(head).plus(tail.concatenate(getHead))
 
-data object EmptyString : StringCollection
+}
+
+data object EmptyString : StringCollection {
+    override fun getAllUppercase(): StringCollection = this
+    override fun getAllLowercase(): StringCollection = this
+    override fun getThreeCharacterLongValues(): StringCollection = this
+    override fun getLength(): IntegerCollection = EmptyNode
+    override fun getSumOfAllLengths(): Int = 0
+    override fun getConcatenated(): String = ""
+    override fun getFirstCharacterConcatenated(): String = ""
+    override fun operationAggregate(operation: (String) -> String): StringCollection = this
+    override fun filter(condition: (String) -> Boolean): StringCollection = this
+    override fun concatenate(getHead: (String) -> String): String = ""
+}
