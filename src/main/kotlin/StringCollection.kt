@@ -20,6 +20,9 @@ sealed interface StringCollection {
         EmptyString -> EmptyNode
         is NonEmptyString -> NonEmptyNode(head.length, tail.getLength())
     }
+    fun <StringCollection> StringCollection.isNotEmpty(): Boolean {
+        return this is NonEmptyString
+    }
 
     fun getSumOfAllLengths(): Int = when (this) {
         EmptyString -> 0
@@ -27,7 +30,7 @@ sealed interface StringCollection {
     }
 
     fun getConcatenated(): String = concatenate { it }
-    
+
     fun getFirstCharacterConcatenated(): String = concatenate { it.take(1) }
 
     fun operationAggregate(operation: (String) -> String): StringCollection = when(this) {
