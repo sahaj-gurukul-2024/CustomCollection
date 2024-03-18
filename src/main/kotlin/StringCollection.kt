@@ -26,14 +26,22 @@ sealed interface StringCollection {
         is NonEmptyString -> head.length + tail.getSumOfAllLengths()
     }
 
-    fun getConcatenated(): String = when(this) {
-        EmptyString -> ""
-        is NonEmptyString -> head.plus(tail.getConcatenated())
+    fun getConcatenated(): String {
+        val getHead: (String) -> String = { it }
+        return when (this) {
+            EmptyString -> ""
+            is NonEmptyString -> {
+                getHead(head).plus(tail.getConcatenated())
+            }
+        }
     }
 
-    fun getFirstCharacterConcatenated(): String = when(this) {
-        EmptyString -> ""
-        is NonEmptyString -> head.take(1).plus(tail.getFirstCharacterConcatenated())
+    fun getFirstCharacterConcatenated(): String {
+        val getHead: (String) -> String = { it }
+        return when (this) {
+            EmptyString -> ""
+            is NonEmptyString -> getHead(head.take(1)).plus(tail.getFirstCharacterConcatenated())
+        }
     }
 
     fun operationAggregate(operation: (String) -> String): StringCollection = when(this) {
