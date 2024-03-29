@@ -18,9 +18,9 @@ sealed interface IntegerCollection {
         is EmptyNode -> throw IndexOutOfBoundsException()
     }
 
-    fun exponentsOf(power: Int) = operationAggregate(power) { it.toDouble().pow(power).toInt() }
+    fun exponentsOf(power: Int) = transform(power) { it.toDouble().pow(power).toInt() }
 
-    fun incrementBy(value: Int) = operationAggregate(value) { it.plus(value) }
+    fun incrementBy(value: Int) = transform(value) { it.plus(value) }
 
     fun getAllOdds(): IntegerCollection = when(this) {
         is NonEmptyNode -> filter { it.mod(2) != 0 }
@@ -52,8 +52,8 @@ sealed interface IntegerCollection {
         is EmptyNode -> EmptyNode
     }
 
-    fun operationAggregate(value: Int, operation: (Int) -> Int): IntegerCollection = when(this) {
-        is NonEmptyNode -> NonEmptyNode(operation(head), tail.operationAggregate(value, operation))
+    fun transform(value: Int, operation: (Int) -> Int): IntegerCollection = when(this) {
+        is NonEmptyNode -> NonEmptyNode(operation(head), tail.transform(value, operation))
         is EmptyNode -> EmptyNode
     }
 }
