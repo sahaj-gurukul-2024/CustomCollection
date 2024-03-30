@@ -8,7 +8,6 @@ sealed interface StringCollection {
     fun getSumOfAllLengths(): Int
     fun getConcatenated(): String
     fun getFirstCharacterConcatenated(): String
-    
     fun transform(operation: (String) -> String): StringCollection
     fun filter(condition: (String) -> Boolean): StringCollection
     fun concatenate(getHead: (String) -> String): String
@@ -23,7 +22,6 @@ data class NonEmptyString(val head: String, val tail: StringCollection) : String
     override fun getSumOfAllLengths(): Int = head.length + tail.getSumOfAllLengths()
     override fun getConcatenated(): String = concatenate { it }
     override fun getFirstCharacterConcatenated(): String = concatenate { it.take(1) }
-    
     override fun transform(operation: (String) -> String): StringCollection = NonEmptyString(operation(head), tail.transform(operation))
     override fun filter(condition: (String) -> Boolean): StringCollection = if (condition(head)) NonEmptyString(head, tail.filter(condition)) else tail.filter(condition)
     override fun concatenate(getHead: (String) -> String): String = getHead(head).plus(tail.concatenate(getHead))
